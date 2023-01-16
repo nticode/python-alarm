@@ -51,9 +51,9 @@ while True:
             "distance": distance
         })
 
-        #mixer.music.play(-1) # -1 to loop the sound
-        #time.sleep(10) #let it play for 10 seconds
-        #mixer.music.stop()
+        mixer.music.play(-1) # -1 to loop the sound
+        time.sleep(10) #let it play for 10 seconds
+        mixer.music.stop()
         time.sleep(0.01 * distance)
         
     requests.post(changed, params = {
