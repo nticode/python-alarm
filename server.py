@@ -32,6 +32,10 @@ def changed():
     timestamp = request.args.get("timestamp")
     distance = request.args.get("distance")
     rdistance = int(distance.split(".")[0])
+    
+    f = open(f"./logs/{time}.txt", "a")
+    f.write(f"[{timestamp}] {distance}\n")
+    f.close()
 
     if not odistance is None:
 
