@@ -1,8 +1,10 @@
 import RPi.GPIO as GPIO
 import time
 
+import datetime
+
 import requests
-url = "http://ip:port/api"
+url = "http://ip:5000/api/create"
 
 from pygame import mixer
 mixer.init()
@@ -40,13 +42,17 @@ while True:
     distance = measureDistance()
     if distance <= 10:
         mixer.music.load("mixkit-facility-alarm-sound-999.wav")
-            
-        requests.post(url, {"time": time.time(), "distance": distance})
+        
+        now = datetime.datetime.now()
+        requests.post(url, params = {
+            "time": now.strftime("%Y-%m-%d"),
+            "timestamp": now.strftime("%Y-%m-%d %H-%M %S"),
+            "distance": distance
+        })
 
-        mixer.music.play(-1) # -1 to loop the sound
-        time.sleep(10) #let it play for 10 seconds
-        mixer.music.stop()
+        #mixer.music.play(-1) # -1 to loop the sound
+        #time.sleep(10) #let it play for 10 seconds
+        #mixer.music.stop()
         time.sleep(0.01 * distance)
         
     print(distance)
-    
