@@ -1,15 +1,21 @@
-import json
 from flask import Flask, request
 app = Flask(__name__)
 
+import datetime
+import os
 
 @app.route('/api/create', methods=["POST"])
 def create():
     time = request.args.get("time")
-    dictence = request.args.get("dictence")
-    print("recived")
-    
-    return json.dumps({'name': 'alice',
-                       'email': 'alice@outlook.com'})
+    timestamp = request.args.get("timestamp")
+    distence = request.args.get("distence")
 
-app.run(host='192.168.0.9', port=5000)
+    f = open(f"./logs/{time}.txt", "a")
+    f.write(f"[{timestamp}] {distence}\n")
+    f.close()
+
+    print(f"[{timestamp}] {distence}\n")
+    
+    return "True"
+
+app.run(host='ip', port=5000)
