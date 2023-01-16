@@ -4,7 +4,8 @@ import time
 import datetime
 
 import requests
-url = "http://ip:5000/api/create"
+create = "http://ip:5000/api/create"
+changed = "http://ip:5000/api/changed"
 
 from pygame import mixer
 mixer.init()
@@ -40,13 +41,13 @@ def measureDistance():
 while True:
     time.sleep(1)
     distance = measureDistance()
+    now = datetime.datetime.now()
     if distance <= 10:
         mixer.music.load("mixkit-facility-alarm-sound-999.wav")
         
-        now = datetime.datetime.now()
-        requests.post(url, params = {
+        requests.post(create, params = {
             "time": now.strftime("%Y-%m-%d"),
-            "timestamp": now.strftime("%Y-%m-%d %H-%M %S"),
+            "timestamp": now.strftime("%Y-%m-%d %H:%M %S.%f"),
             "distance": distance
         })
 
@@ -55,4 +56,11 @@ while True:
         #mixer.music.stop()
         time.sleep(0.01 * distance)
         
+    requests.post(changed, params = {
+            "time": now.strftime("%Y-%m-%d"),
+            "timestamp": now.strftime("%Y-%m-%d %H:%M %S.%f"),
+            "distance": distance
+    })
+        
     print(distance)
+    
